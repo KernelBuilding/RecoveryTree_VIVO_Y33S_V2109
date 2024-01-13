@@ -1,0 +1,27 @@
+# mount point    fstype    device                       device2               flags
+/recovery			emmc	/dev/block/platform/bootdevice/by-name/recovery		flags=display="RECOVERY";backup=1
+/boot				emmc	/dev/block/platform/bootdevice/by-name/boot			flags=display="BOOT";backup=1
+/logo				emmc	/dev/block/platform/bootdevice/by-name/logo			flags=display="LOGO";backup=1;flashimg=1
+/lk					emmc	/dev/block/platform/bootdevice/by-name/lk			flags=display="uboot";backup=1;flashimg=1
+/cache           ext4      /dev/block/platform/bootdevice/by-name/cache
+/dtbo				emmc 	/dev/block/platform/bootdevice/by-name/dtbo 		flags=display="DTBo";backup=1
+/dev/block/platform/bootdevice/by-name/vbmeta 		flags=display="VBmeta";backup=1
+/metadata        ext4      /dev/block/platform/bootdevice/by-name/metadata      flags=display="Metadata"
+
+# vivo partition
+/vgc             ext4       /dev/block/dm-4        flags=display="VGC"
+/oem		    ext4	   /dev/block/dm-3	      flags=display="Cust"
+/odm            ext4       /dev/block/dm-5        flags=display="Odm"
+
+# IMEI and modem related
+# below four partitions are ext4, but we are using only for backup so emmc
+/protect_f       emmc      /dev/block/platform/bootdevice/by-name/protect1    flags=backup
+/protect_s       emmc      /dev/block/platform/bootdevice/by-name/protect2    flags=backup
+/nvdata          emmc      /dev/block/platform/bootdevice/by-name/nvdata      flags=backup;flashimg=1
+/nvcfg           emmc      /dev/block/platform/bootdevice/by-name/nvcfg       flags=backup;flashimg=1
+/nvram           emmc      /dev/block/platform/bootdevice/by-name/nvram       flags=backup;flashimg=1
+/proinfo         emmc      /dev/block/platform/bootdevice/by-name/proinfo     flags=backup;flashimg=1
+
+# Removable storage
+/external_sd		auto	/dev/block/mmcblk1p1	/dev/block/mmcblk1			flags=display="External SDcard";storage;wipeingui;removable;backup=0
+/usbotg				auto    /dev/block/sda1			/dev/block/sda				flags=display="Usb-Otg";storage;wipeingui;removable;backup=0

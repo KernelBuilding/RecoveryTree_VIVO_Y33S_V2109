@@ -1,0 +1,46 @@
+import /init.recovery.trustonic.rc
+import /init.recovery.touch.rc
+on init
+    mkdir /mnt/vendor/persist
+    mount ext4 /dev/block/by-name/persist /mnt/vendor/persist rw
+
+on fs
+    install_keyring
+    export LD_LIBRARY_PATH /system/lib64:/vendor/lib64:/vendor/lib64/hw
+    setprop crypto.ready 1
+
+
+service keymaster-4-0 /system/bin/android.hardware.keymaster@4.0-service.trustonic
+    user root
+    group root drmrpc
+    disabled
+    seclabel u:r:recovery:s0
+
+service gatekeeper-1-0 /system/bin/android.hardware.gatekeeper@1.0-service
+    user root
+    group root
+    disabled
+    seclabel u:r:recovery:s0
+
+
+on property:hwservicemanager.ready=true
+    start keymaster-4-0
+    start gatekeeper-1-0
+    start guardianangle
+    start vivofbe
+
+on property:ro.crypto.state=unsupported
+    stop mobicore
+    stop keymaster-4-0
+    stop gatekeeper-1-0
+
+on property:ro.crypto.state=unencrypted
+    stop mobicore
+    stop keymaster-4-0
+    stop gatekeeper-1-0
+
+on property:twrp.decrypt.done=true
+    stop mobicore
+    stop keymaster-4-0
+    stop gatekeeper-1-0
+   
